@@ -1,29 +1,32 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Users') }}
+            {{ __('Payments') }}
         </h2>
     </x-slot>
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 shadow sm:rounded-lg p-6">
-                <a href="{{ route('users.create') }}"
+                <a href="{{ route('payment.create') }}"
                     class="px-4 py-2 border-2 rounded transition-colors duration-300"
                     style="border-color: #5c1ebd; color: #5c1ebd;"
                     onmouseover="this.style.backgroundColor='#5c1ebd'; this.style.color='white';"
                     onmouseout="this.style.backgroundColor='transparent'; this.style.color='#5c1ebd';">
-                    Add User
+                    Add Payment
                 </a>
                 </br>
                 <div class="overflow-x-auto pt-7">
-                    <table id="users-table" class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 table-auto">
+                    <table id="payment-table" class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 table-auto">
                         <thead class="bg-gray-100 dark:bg-gray-700">
                             <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 dark:text-gray-300 uppercase tracking-wider">ID</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 dark:text-gray-300 uppercase tracking-wider">Name</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 dark:text-gray-300 uppercase tracking-wider">Email</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 dark:text-gray-300 uppercase tracking-wider">Created</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 dark:text-gray-300 uppercase tracking-wider">Payment id</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 dark:text-gray-300 uppercase tracking-wider">Number</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 dark:text-gray-300 uppercase tracking-wider">Amount</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 dark:text-gray-300 uppercase tracking-wider">Telegram id</th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-600 dark:text-gray-300 uppercase tracking-wider">Status</th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-600 dark:text-gray-300 uppercase tracking-wider">Date of payment</th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-600 dark:text-gray-300 uppercase tracking-wider">Date of accept</th>
                                 <th class="px-6 py-3 text-right text-xs font-medium text-gray-600 dark:text-gray-300 uppercase tracking-wider">Actions</th>
                             </tr>
                         </thead>
@@ -44,14 +47,18 @@
 
 <script>
     $(document).ready(function () {
-        var table = $('#users-table').DataTable({
+        var table = $('#payment-table').DataTable({
             processing: true,
             serverSide: true,
-            ajax: '{{ route('users.data') }}',
+            ajax: '{{ route('payment.data') }}',
             columns: [
-                { data: 'id', name: 'id' },
-                { data: 'name', name: 'name' },
-                { data: 'email', name: 'email' },
+                { data: 'payment_id', name: 'payment_id' },
+                { data: 'number', name: 'number' },
+                { data: 'amount', name: 'amount' },
+                { data: 'telegram_id', name: 'telegram_id' },
+                { data: 'status', name: 'status' },
+                { data: 'date_of_payment', name: 'date_of_payment' },
+                { data: 'date_of_accept', name: 'date_of_accept' },
                 { data: 'created_at', name: 'created_at' },
                 {
                     data: null,
@@ -71,7 +78,7 @@
         });
         $.getScript("https://cdn.jsdelivr.net/npm/sweetalert2@11", function() {
         
-            $('#users-table tbody').on('click', '.delete-user', function () {
+            $('#payment-table tbody').on('click', '.delete-user', function () {
                 var userId = $(this).data('id');
 
                 Swal.fire({
@@ -88,7 +95,7 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $.ajax({
-                            url: '/users/' + userId,
+                            url: '/payment/' + userId,
                             type: 'DELETE',
                             data: {
                                 _token: '{{ csrf_token() }}'
@@ -121,5 +128,5 @@
 
         });
     });
-    $('#users-table_length').hide
+    $('#payment-table_length').hide
 </script>

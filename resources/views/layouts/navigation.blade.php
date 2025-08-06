@@ -21,6 +21,16 @@
                         {{ __('Users') }}
                     </x-nav-link>
                 </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('payment.index')" :active="request()->routeIs('payment.index')">
+                        {{ __('Payment') }}
+                    </x-nav-link>
+                </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('proxies.index')" :active="request()->routeIs('proxies.index')">
+                        {{ __('Proxies') }}
+                    </x-nav-link>
+                </div>
             </div>
 
             <!-- Settings Dropdown -->

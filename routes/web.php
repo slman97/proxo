@@ -3,6 +3,8 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\ProxiesController;
 
 Route::get('/', function () {
     return view('dashboard');
@@ -18,6 +20,20 @@ Route::middleware('auth')->group(function () {
         Route::get('/create', 'create')->name('users.create');
         Route::post('/store', 'store')->name('users.store');
         Route::delete('/{user}', 'destroy')->name('users.destroy');
+    });
+    Route::prefix('payment')->controller(PaymentController::class)->group(function () {
+        Route::get('/', 'index')->name('payment.index');
+        Route::get('/data', 'getData')->name('payment.data');
+        Route::get('/create', 'create')->name('payment.create');
+        Route::post('/store', 'store')->name('payment.store');
+        Route::delete('/{payment}', 'destroy')->name('payment.destroy');
+    });
+    Route::prefix('proxies')->controller( ProxiesController::class)->group(function () {
+        Route::get('/', 'index')->name('proxies.index');
+        Route::get('/data', 'getData')->name('proxies.data');
+        Route::get('/create', 'create')->name('proxies.create');
+        Route::post('/store', 'store')->name('proxies.store');
+        Route::delete('/{proxy}', 'destroy')->name('proxies.destroy');
     });
 
 });
