@@ -16,7 +16,7 @@
         <link href="https://cdn.datatables.net/2.3.2/css/dataTables.bulma.css" rel="stylesheet" />
 
         <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @vite(['resources/css/app.css', 'resources/js/app.js'], true)
     </head>
     <style>
     </style>
