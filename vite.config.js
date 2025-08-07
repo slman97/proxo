@@ -8,5 +8,4 @@ export default defineConfig({
             refresh: true,
         }),
     ],
-    base: 'https://proxo-production.up.railway.app/build/',
 });
