@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Payment;
 use App\Models\Proxies;
+use App\Models\TelegramUsers;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Yajra\DataTables\DataTables;
@@ -75,16 +76,16 @@ class ApiController extends Controller
             'proxiesData' => $proxiesData,
         ]);
     }
-
     public function getProxiesData(Request $request)
     {
-        $proxies = Proxies::select('*');
-        return DataTables::of($proxies)->make(true);
+        $proxies = Proxies::all();
+        return response()->json($proxies);
     }
+
     public function getPaymentsData(Request $request)
     {
-        $payments = Payment::select('*');
-        return DataTables::of($payments)->make(true);
+        $payments = Payment::all('*');
+        return response()->json($payments);
     }
 
     public function destroyPayments($id)
@@ -161,6 +162,34 @@ class ApiController extends Controller
         $proxy->delete();
 
         return response()->json(['message' => 'Proxy deleted successfully']);
+    }
+
+    public function TelegramUsers(Request $request)
+    {
+        $telegramUsers = TelegramUsers::all();
+        return response()->json($telegramUsers);
+    }
+
+    public function AddSyriaTelPayment(Request $request)
+    {
+        $request->validate([
+            'payment_id' => 'required|string|max:255',
+            'amount' => 'required|string|max:255',
+        ]);
+
+        $payment = Payment::create([
+            'payment_id' => $request->payment_id,
+            'number' => $request->number ?? null,
+            'amount' => $request->amount,
+            'telegram_id' => $request->telegram_id ?? null,
+            'date_of_payment' => Carbon::now()->format('Y-m-d'),
+            'status' => 'pending',
+        ]);
+
+        return response()->json([
+            'message' => 'Payment created successfully.',
+            'payment' => $payment,
+        ], 201);
     }
 
 }

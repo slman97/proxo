@@ -11,15 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('payments', function (Blueprint $table) {
+        Schema::create('telegram_users', function (Blueprint $table) {
             $table->id();
-            $table->string('payment_id')->nullable();
-            $table->string('number')->nullable();
-            $table->string('amount')->nullable();
-            $table->string('date_of_payment')->nullable();
-            $table->string('date_of_accept')->nullable();
-            $table->string('status')->nullable();
             $table->string('telegram_id')->nullable();
+            $table->float('credit')->default(0.00);
             $table->timestamps();
         });
     }
@@ -29,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('payments');
+        Schema::dropIfExists('telegram_users');
     }
 };
