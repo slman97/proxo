@@ -183,7 +183,7 @@ class ApiController extends Controller
             'amount' => $request->amount,
             'telegram_id' => $request->telegram_id ?? null,
             'date_of_payment' => Carbon::now()->format('Y-m-d'),
-            'status' => 'pending',
+            'status' => 'resave',
         ]);
 
         return response()->json([
