@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Notifications;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
@@ -189,6 +190,30 @@ class ApiController extends Controller
         return response()->json([
             'message' => 'Payment created successfully.',
             'payment' => $payment,
+        ], 201);
+    }
+
+        public function notifications(Request $request)
+    {
+        $notifications = Notifications::all();
+        return response()->json($notifications);
+    }
+
+    public function notificationsStore(Request $request)
+    {
+        $request->validate([
+            'message' => 'required|string|max:255',
+        ]);
+
+        $notification = Notifications::create([
+            'message' => $request->message,
+            'user_id' => $request->user_id,
+            'status' => 'pending',
+        ]);
+
+        return response()->json([
+            'message' => 'Notification created successfully.',
+            'notification' => $notification,
         ], 201);
     }
 

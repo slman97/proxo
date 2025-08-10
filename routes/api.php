@@ -16,6 +16,7 @@ Route::middleware('auth:sanctum')->controller(ApiController::class)->group(funct
     Route::delete('/ProxiesDelete/{id}', 'destroyProxies');
     Route::get('/TelegramUsers', 'TelegramUsers');
     Route::post('/AddSyriaTelPayment', 'AddSyriaTelPayment');
+    Route::post('/notificationsStore', 'notificationsStore');
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
