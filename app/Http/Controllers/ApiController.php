@@ -8,9 +8,10 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Payment;
 use App\Models\Proxies;
-use App\Models\TelegramUsers;
+use App\Models\TelegramUser;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\DataTables;
 
 class ApiController extends Controller
@@ -165,14 +166,15 @@ class ApiController extends Controller
         return response()->json(['message' => 'Proxy deleted successfully']);
     }
 
-    public function TelegramUsers(Request $request)
+    public function TelegramUser(Request $request)
     {
-        $telegramUsers = TelegramUsers::all();
-        return response()->json($telegramUsers);
+        $TelegramUser = TelegramUser::all();
+        return response()->json($TelegramUser);
     }
 
     public function AddSyriaTelPayment(Request $request)
     {
+        Log::info($request->message);
         $request->validate([
             'payment_id' => 'required|string|max:255',
             'amount' => 'required|string|max:255',
@@ -195,7 +197,7 @@ class ApiController extends Controller
 
         public function notifications(Request $request)
     {
-        $notifications = Notifications::all();
+        $notifications = Notifications::where('user_id',Auth::user()->id)->get();
         return response()->json($notifications);
     }
 
@@ -207,14 +209,35 @@ class ApiController extends Controller
 
         $notification = Notifications::create([
             'message' => $request->message,
-            'user_id' => $request->user_id,
-            'status' => 'pending',
+            'user_id' => $request->userId,
+            'status' => 'New',
         ]);
 
         return response()->json([
             'message' => 'Notification created successfully.',
             'notification' => $notification,
         ], 201);
+    }
+
+    public function updateStatus(Request $request) {
+        $userId = $request->input('user_id');
+
+        if (!$userId) {
+            return response()->json(['message' => 'User ID is required'], 400);
+        }
+
+        Notifications::where('user_id', $userId)
+            ->where('status', 'pending')
+            ->update(['status' => 'Read']);
+
+        return response()->json(['message' => 'Notifications updated successfully']);
+    }
+
+    public function logout(Request $request){
+
+        $request->user()->currentAccessToken()->delete();
+
+        return response()->json(['message' => 'Logged out successfully']);
     }
 
 }

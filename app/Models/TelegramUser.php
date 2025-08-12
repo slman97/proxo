@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class TelegramUsers extends Model
+class TelegramUser extends Model
 {
     protected $fillable = [
         'telegram_id',

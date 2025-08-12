@@ -6,6 +6,9 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProxiesController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\TelegramController;
+use Illuminate\Http\Request;
+use Telegram\Bot\Laravel\Facades\Telegram;
 
 Route::get('/', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])->name('dashboard');
@@ -37,5 +40,8 @@ Route::middleware('auth')->group(function () {
     });
 
 });
+
+
+Route::post('/webhook', [TelegramController::class, 'webhookHandler']);
 
 require __DIR__.'/auth.php';

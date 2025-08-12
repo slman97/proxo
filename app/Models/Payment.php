@@ -15,4 +15,8 @@ class Payment extends Model
         'status',
         'telegram_id',
     ];
+
+    public function getConfirmedAttribute(){
+         return $this->status === 'accepted';
+    }
 }
